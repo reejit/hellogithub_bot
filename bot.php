@@ -217,9 +217,9 @@ function gEventPush($update)
 
     $u_name = makeName($update);
 
-    $msgText = "🔶 in " . makeRepoName($update);
-    $msgText .= " on <code>" . $ref . "/" . $branch . " </code>\n";
-    $msgText .= "<b>" . $u_name . "</b> pushed a total of <b>" . count($update["commits"]) . "</b> commits:";
+    $msgText = "Commits in\n" . makeRepoName($update);
+    $msgText .= "On branch <code>" . $ref . "/" . $branch . " </code>\n";
+    $msgText .= "<b>User:/</b>" . $u_name . "</b> pushed a total of <b>" . count($update["commits"]) . "</b> commits:";
 
     if (count($update["commits"]) <= G_SHOWMAXCOMMITS) {
         $all_commits = array_reverse($update["commits"]);
@@ -228,11 +228,11 @@ function gEventPush($update)
             $msg = explode("\n", $commit["message"])[0];
             $datetime = date_format(date_create($commit["timestamp"]), DATETIME_FORMAT);
 
-            $msgText .= "\n\n<a href='" . $commit["url"] . "' >" . $hash . "</a> from " . $datetime . " ";
+            $msgText .= "\n\n<a href='" . $commit["url"] . "' >" . $hash . "</a> on " . $datetime . " ";
             $msgText .= "\n<b>" . $msg . "</b>";
-            $msgText .= "\nModified: <b>" . count($commit["modified"]) . "</b> | ";
-            $msgText .= "New: <b>" . count($commit["added"]) . "</b> | ";
-            $msgText .= "Removed: <b>" . count($commit["removed"]) . "</b>";
+            $msgText .= "\nCode modified: <b>" . count($commit["modified"]) . "</b> \n ";
+            $msgText .= "New code: <b>" . count($commit["added"]) . "</b> \n";
+            $msgText .= "Code removed: <b>" . count($commit["removed"]) . "</b>";
         }
     } else {
         $commit = $update["head_commit"];
@@ -240,11 +240,11 @@ function gEventPush($update)
         $msg = explode("\n", $commit["message"])[0];
         $datetime = date_format(date_create($commit["timestamp"]), DATETIME_FORMAT);
 
-        $msgText .= "\n\nHEAD at <a href='" . $commit["url"] . "' >" . $hash . "</a> from " . $datetime . " ";
+        $msgText .= "\n\nHEAD at <a href='" . $commit["url"] . "' >" . $hash . "</a> on " . $datetime . " ";
         $msgText .= "\n<b>" . $msg . "</b>";
-        $msgText .= "\nModified: <b>" . count($commit["modified"]) . "</b> | ";
-        $msgText .= "New: <b>" . count($commit["added"]) . "</b> | ";
-        $msgText .= "Removed: <b>" . count($commit["removed"]) . "</b>";
+        $msgText .= "\nCode modified: <b>" . count($commit["modified"]) . "</b> \n";
+        $msgText .= "New code: <b>" . count($commit["added"]) . "</b> \n";
+        $msgText .= "Code removed: <b>" . count($commit["removed"]) . "</b>";
         $msgText .= "\n...";
     }
 
@@ -264,15 +264,15 @@ function gEventIssues($update)
     $msgText = "";
     $reponame = " in " . makeRepoName($update);
     if ($update["action"] == "opened") {
-        $msgText .= "🟩" . $reponame;
+        $msgText .= "New Issue on" . $reponame;
         $msgText .= "\n<b>" . $update["sender"]["login"] . "</b> opened <a href='" . $update["issue"]["html_url"] . "'>issue #" . $update["issue"]["number"] . "</a>: ";
         $msgText .= "\n  " . $update["issue"]["title"] . "";
     } elseif ($update["action"] == "closed") {
-        $msgText .= "🟥" . $reponame;
+        $msgText .= "Issue closed in" . $reponame;
         $msgText .= "\n<b>" . $update["sender"]["login"] . "</b> closed <a href='" . $update["issue"]["html_url"] . "'>issue #" . $update["issue"]["number"] . "</a>: ";
         $msgText .= "\n  " . $update["issue"]["title"] . "";
     } elseif ($update["action"] == "reopened") {
-        $msgText .= "🟨" . $reponame;
+        $msgText .= "Issue reopened" . $reponame;
         $msgText .= "\n<b>" . $update["sender"]["login"] . "</b> re-opened <a href='" . $update["issue"]["html_url"] . "'>issue #" . $update["issue"]["number"] . "</a>: ";
         $msgText .= "\n  " . $update["issue"]["title"] . "";
     }
@@ -282,7 +282,7 @@ function gEventIssues($update)
 
 function gEventMember($update)
 {
-    $msgText = "🧑‍💻 in " . makeRepoName($update);
+    $msgText = "Member in " . makeRepoName($update);
     if ($update["action"] == "added") {
         $msgText .= "\n<b>" . $update["member"]["login"] . "</b> has been added as a collaborator!";
     } elseif ($update["action"] == "removed") {
@@ -295,7 +295,7 @@ function gEventMember($update)
 
 function gEventDeployKey($update)
 {
-    $msgText = "🔑 in " . makeRepoName($update);
+    $msgText = "Key in " . makeRepoName($update);
     if ($update["action"] == "created") {
         $msgText .= "\n<b>" . $update["sender"]["login"] . "</b> added a new SSH key:";
         $msgText .= " <b>" . $update["key"]["title"] . "</b> \n<code>SHA256:" . getFingerprint($update["key"]["key"]) . "</code>";
@@ -315,10 +315,10 @@ function gEventDeployKey($update)
 
 function gEventPullRequest($update)
 {
-    $msgText = "🔷 in " . makeRepoName($update);
+    $msgText = "Pull request in " . makeRepoName($update);
 
     if ($update["action"] == "opened" || $update["action"] == "reopened") {
-        $msgText .= "\n<b>" . $update["sender"]["login"] . "</b> opened <a href='" . $update["pull_request"]["html_url"] . "'>pull request #" . $update["pull_request"]["number"] . "</a>: ";
+        $msgText .= "\n<b>" . $update["sender"]["login"] . "</b> opened  <a href='" . $update["pull_request"]["html_url"] . "'>pull request #" . $update["pull_request"]["number"] . "</a>: ";
         $msgText .= "\n<b>" . $update["pull_request"]["title"] . "</b>";
         $msgText .= "\n<code>[" . $update["pull_request"]["base"]["repo"]["full_name"] . "] " . $update["pull_request"]["base"]["ref"];
         $msgText .= " ← [" . $update["pull_request"]["head"]["repo"]["full_name"] . "] " . $update["pull_request"]["head"]["ref"] . "</code>";
@@ -386,7 +386,7 @@ function gEventRepository($update)
 
 function gEventRelease($update)
 {
-    $msgText = "🚀 in " . makeRepoName($update);
+    $msgText = "New release in " . makeRepoName($update);
     $relName = $update["release"]["name"];
     if (!$relName || $relName == "") {
         $relName = $update["release"]["tag_name"];
