@@ -1,9 +1,10 @@
 <?php
 // config.php content:
 // <?php
-$BOT_TOKEN = $_ENV['BOT_TOKEN']; 
+
 
 // Name of your Bot:
+define('BOT_TOKEN', '1672544996:AAEUPCz6_l-NUjU5-vZ00q4OOOLf8wcEl-Q');
 define('BOT_NAME', 'hellogithub_bot');
 //Set locale for Timestrings
 setlocale(LC_TIME, "de_DE");
