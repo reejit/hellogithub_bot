@@ -10,7 +10,7 @@ define('BOT_NAME', 'hellogithub_bot');
 setlocale(LC_TIME, "de_DE");
 define('DATETIME_FORMAT', "d.m.y on H:i");
 
-define('BOT_URL', $_SERVER["SCRIPT_URI"]);
+define('BOT_URL', 'https://githubupdatesbottelegram.herokuapp.com/');
 define('API_URL', 'https://api.telegram.org/bot' . BOT_TOKEN . '/');
 define('G_SHOWMAXCOMMITS', 5);
 
