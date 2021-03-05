@@ -1,14 +1,13 @@
 <?php
-include 'config.php';
 // config.php content:
 // <?php
-// define('BOT_TOKEN', 'XXXXX');
+$BOT_TOKEN = $_ENV['BOT_TOKEN']; 
 
 // Name of your Bot:
 define('BOT_NAME', 'hellogithub_bot');
 //Set locale for Timestrings
 setlocale(LC_TIME, "de_DE");
-define('DATETIME_FORMAT', "d.m.y - H:i:s");
+define('DATETIME_FORMAT', "d.m.y on H:i");
 
 define('BOT_URL', $_SERVER["SCRIPT_URI"]);
 define('API_URL', 'https://api.telegram.org/bot' . BOT_TOKEN . '/');
